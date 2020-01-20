@@ -17,7 +17,7 @@ class LessonGeneratorTest {
     private LessonGenerator lessonGenerator;
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         lessonGenerator = new LessonGenerator();
     }
 
