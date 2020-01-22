@@ -27,6 +27,18 @@ public class Lesson {
         return endTime;
     }
 
+    public void setBeginTime(LocalTime beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         return "Lesson{" +
