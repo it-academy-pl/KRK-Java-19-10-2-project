@@ -10,11 +10,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class InputParametersReader {
+    private final PropertiesReader propertiesReader = PropertiesReader.getInstance();
+    private Options options;
 
-    private static final String DATE_FORMAT = "d.M.yyyy";
-
-    public LessonParameters readParameters(String[] args) throws ParseException {
-        Options options = new Options();
+    public InputParametersReader() {
+        options = new Options();
         options.addOption("n", true, "number of required hours");
         options.addOption("f", true, "file name");
         options.addOption("h", false, "show help");
@@ -22,7 +22,9 @@ public class InputParametersReader {
         options.addOption("b", true, "lesson begin time");
         options.addOption("e", true, "lesson end time");
         options.addOption("s", true, "start date");
+    }
 
+    public LessonParameters readParameters(String[] args) throws ParseException {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
@@ -49,13 +51,14 @@ public class InputParametersReader {
                 }
             }
         }
-
+//TODO: use time format for parse
         LocalTime beginTime = LocalTime.now();
         if (cmd.hasOption("b")) {
             String value = cmd.getOptionValue("b");
             beginTime = LocalTime.parse(value);
         }
 
+        //TODO: use time format for parse
         LocalTime endTime = LocalTime.now();
         if (cmd.hasOption("e")) {
             String value = cmd.getOptionValue("e");
@@ -65,10 +68,16 @@ public class InputParametersReader {
         LocalDate startDate = LocalDate.now();
         if (cmd.hasOption("s")) {
             String value = cmd.getOptionValue("s");
-            startDate = LocalDate.parse(value, DateTimeFormatter.ofPattern(DATE_FORMAT));
+            String dateFormat = propertiesReader.readProperty("date.format");
+            startDate = LocalDate.parse(value, DateTimeFormatter.ofPattern(dateFormat));
         }
 
         return new LessonParameters.Builder(beginTime, endTime, numberOfHours, lessonDays, startDate).fileName(fileName).
                 showHelp(showHelp).build();
+    }
+
+    public void showHelp() {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("java -cp schedule-generator.jar pl.itacademy.schedule.Main -d monday_thursday -b 17:00 -e 18:30 -n 21 -s 30.05.2019 -f example1", options);
     }
 }
