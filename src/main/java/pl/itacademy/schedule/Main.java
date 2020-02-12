@@ -26,5 +26,8 @@ public class Main {
         workbook.write(fos);
         workbook.close();
         fos.close();
+
+        CalendarificHolidaysChecker holidaysChecker = new CalendarificHolidaysChecker();
+        holidaysChecker.getHolidays(2020);
     }
 }
