@@ -18,7 +18,7 @@ class LessonGeneratorTest {
 
     @BeforeEach
     public void setup() {
-        lessonGenerator = new LessonGenerator();
+        lessonGenerator = new LessonGenerator(new DefaultHolidaysChecker());
     }
 
     @Test
@@ -66,5 +66,39 @@ class LessonGeneratorTest {
         Schedule resultSchedule = lessonGenerator.generateSchedule(lessonParameters);
 
         assertThat(resultSchedule, equalTo(expectedSchedule));
+    }
+
+    @Test
+    public void generateSchedule_withHolidays_successfullyGeneratesProperSchedule() {
+        lessonGenerator = new LessonGenerator(new MockHolidaysChecker());
+
+        LessonParameters lessonParameters = new LessonParameters.Builder(
+                LocalTime.of(17, 0),
+                LocalTime.of(18, 30),
+                3,
+                Set.of(MONDAY, WEDNESDAY),
+                LocalDate.of(2020, 1, 1))
+                .fileName("schedule.xlsx")
+                .showHelp(false)
+                .build();
+
+        LocalTime beginTime = LocalTime.of(17, 0);
+        LocalTime endTime = LocalTime.of(18, 30);
+        Lesson lesson1 = new Lesson(LocalDate.of(2020, 1, 8), beginTime, endTime);
+        Lesson lesson2 = new Lesson(LocalDate.of(2020, 1, 13), beginTime, endTime);
+
+        Schedule expectedSchedule = new Schedule(List.of(lesson1, lesson2), true);
+        Schedule resultSchedule = lessonGenerator.generateSchedule(lessonParameters);
+
+        assertThat(resultSchedule, equalTo(expectedSchedule));
+    }
+
+    private static class MockHolidaysChecker implements HolidaysChecker {
+
+        @Override
+        public List<LocalDate> getHolidays(int year) {
+            return List.of(LocalDate.of(year, 1, 1),
+                    LocalDate.of(year, 1, 6));
+        }
     }
 }

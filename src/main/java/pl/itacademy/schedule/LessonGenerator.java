@@ -9,6 +9,12 @@ import java.util.Set;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 public class LessonGenerator {
+    private HolidaysChecker holidaysChecker;
+
+    public LessonGenerator(HolidaysChecker holidaysChecker) {
+        this.holidaysChecker = holidaysChecker;
+    }
+
     public Schedule generateSchedule(LessonParameters lessonParameters) {
         long completeMinutes = 0;
         long lessonLength = MINUTES.between(lessonParameters.getBeginTime(), lessonParameters.getEndTime());
