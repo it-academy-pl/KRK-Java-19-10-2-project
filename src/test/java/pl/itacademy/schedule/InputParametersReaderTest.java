@@ -3,6 +3,8 @@ package pl.itacademy.schedule;
 import org.apache.commons.cli.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.itacademy.schedule.schedule.LessonParameters;
+import pl.itacademy.schedule.util.InputParametersReader;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

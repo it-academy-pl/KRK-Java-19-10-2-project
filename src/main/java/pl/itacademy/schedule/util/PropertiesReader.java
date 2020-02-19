@@ -1,4 +1,4 @@
-package pl.itacademy.schedule;
+package pl.itacademy.schedule.util;
 
 import java.io.FileInputStream;
 import java.io.IOException;

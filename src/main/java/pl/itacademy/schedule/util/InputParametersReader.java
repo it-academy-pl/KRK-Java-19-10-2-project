@@ -1,6 +1,7 @@
-package pl.itacademy.schedule;
+package pl.itacademy.schedule.util;
 
 import org.apache.commons.cli.*;
+import pl.itacademy.schedule.schedule.LessonParameters;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

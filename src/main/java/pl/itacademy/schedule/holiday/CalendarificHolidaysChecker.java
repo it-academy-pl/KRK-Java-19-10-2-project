@@ -1,6 +1,7 @@
-package pl.itacademy.schedule;
+package pl.itacademy.schedule.holiday;
 
 import com.jayway.jsonpath.JsonPath;
+import pl.itacademy.schedule.util.PropertiesReader;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;

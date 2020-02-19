@@ -1,4 +1,4 @@
-package pl.itacademy.schedule;
+package pl.itacademy.schedule.holiday;
 
 public class HolidaysCheckerFactory {
     public HolidaysChecker createHolidayChecker(String type) {

@@ -1,4 +1,4 @@
-package pl.itacademy.schedule;
+package pl.itacademy.schedule.holiday;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,4 +1,6 @@
-package pl.itacademy.schedule;
+package pl.itacademy.schedule.schedule;
+
+import pl.itacademy.schedule.holiday.HolidaysChecker;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -22,8 +24,15 @@ public class LessonGenerator {
         LocalDate currentDate = lessonParameters.getStartDate();
         Set<DayOfWeek> lessonDays = lessonParameters.getLessonDays();
         List<Lesson> lessons = new ArrayList<>();
+        int currentYear = currentDate.getYear();
+        List<LocalDate> holidays = new ArrayList<>(holidaysChecker.getHolidays(currentYear));
+        holidays.addAll(holidaysChecker.getHolidays(currentYear + 1));
         do {
-            currentDate = findNextApplicableDate(currentDate, lessonDays);
+            if (currentYear != currentDate.getYear()) {
+                currentYear++;
+                holidays.addAll(holidaysChecker.getHolidays(currentYear + 1));
+            }
+            currentDate = findNextApplicableDate(currentDate, lessonDays, holidays);
             Lesson lesson = new Lesson(currentDate, lessonParameters.getBeginTime(), lessonParameters.getEndTime());
             lessons.add(lesson);
             completeMinutes += lessonLength;
@@ -39,9 +48,11 @@ public class LessonGenerator {
         return new Schedule(lessons, isSuccessful);
     }
 
-    private LocalDate findNextApplicableDate(LocalDate startDate, Set<DayOfWeek> lessonDays) {
-        while (!lessonDays.contains(startDate.getDayOfWeek())) {
+    private LocalDate findNextApplicableDate(LocalDate startDate, Set<DayOfWeek> lessonDays, List<LocalDate> holidays) {
+        while (!lessonDays.contains(startDate.getDayOfWeek()) ||
+                holidays.contains(startDate)) {
             startDate = startDate.plusDays(1);
+
         }
         return startDate;
     }
